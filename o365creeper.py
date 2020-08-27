@@ -1,9 +1,8 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
-# Created by Korey McKinley, Senior Security Consulant at LMG Security
-# https://lmgsecurity.com
+# Created by Korey McKinley
 
-# July 12, 2019
+# Updated for Python3 August 27, 2020
 
 # This tool will query the Microsoft Office 365 web server to determine
 # if an email account is valid or not. It does not need a password and
@@ -33,7 +32,7 @@ def main():
     if args.file is not None:
         with open(args.file) as file:
             for line in file:
-                s = req.session()
+                req.session()
                 line = line.split()
                 email = ' '.join(line)
                 body = '{"Username":"%s"}' % email
@@ -42,14 +41,14 @@ def main():
                 valid = re.search('"IfExistsResult":0,', response)
                 invalid = re.search('"IfExistsResult":1,', response)
                 if invalid:
-                    print '%s - INVALID' % email
+                    print('%s - INVALID' % email)
                 if valid and args.output is not None:
-                    print '%s - VALID' % email
-                    with open(args.output, 'a+') as output_file: 
+                    print('%s - VALID' % email)
+                    with open(args.output, 'a+') as output_file:
                         output_file.write(email+'\n')
                 else:
                     if valid:
-                        print '%s - VALID' % email
+                        print('%s - VALID' % email)
 
     elif args.email is not None:
         email = args.email
@@ -59,13 +58,13 @@ def main():
         valid = re.search('"IfExistsResult":0', response)
         invalid = re.search('"IfExistsResult":1', response)
         if invalid:
-            print '%s - INVALID' % email
+            print('%s - INVALID' % email)
         if valid and args.output is not None:
-            print '%s - VALID' % email
+            print('%s - VALID' % email)
             with open(args.output, 'w') as output_file:
                 output_file.write(email+'\n')
         else:
             if valid:
-                print '%s - VALID' % email
+                print('%s - VALID' % email)
 if __name__ == "__main__":
     main()
